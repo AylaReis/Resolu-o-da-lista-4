@@ -1,2 +1,2 @@
-# Resolu-o-da-lista-4
+# Resolucao-da-lista-4
 Exercícios resolvidos
