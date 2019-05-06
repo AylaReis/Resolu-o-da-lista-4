@@ -33,9 +33,21 @@ unique("pnud$ANO")
 
 ##Selecionando dados de 2010 e de PE
 
-#Filtração de dados que serão trabalhados
+#Filtração de dados que serão trabalhados PNUD
 pnud_pe_2010 <- pnud %>% filter(ANO == 2010 & UF == 26)
 
 #Removendo o que não será mais utilizado
 rm("pnud")
 
+##Filtrando dados que ser�o trabalhados censo escolar
+# Docentes <70 anos e > 18 anos, agrupados pelo munic�pio onde lecionam
+docentes_sel <- docentes_pe %>% group_by(CO_MUNICIPIO) %>% summarise(num_docentes = sum(NU_IDADE < 70 & NU_IDADE > 18))
+docentes_sel
+
+#Alunos <25 anos e > 1 ano
+alunos_sel <- matricula_pe %>% group_by(CO_MUNICIPIO) %>% summarise(num_alunos = sum(NU_IDADE < 25 & NU_IDADE > 1))
+alunos_sel
+
+##Filtranto o IDMH 
+idh_municipios <- pnud_pe_2010 %>% group_by(Codmun7) %>% summarise(idhm = IDHM)
+idh_municipios
