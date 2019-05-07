@@ -94,6 +94,16 @@ sd(alunos_por_docentes[["alu_por_doc"]])
 
 
 ##Maior número de alunos por docente e seu idhm
+#Juntando em uma única tabela
+alu_por_doc_idhm <- idh_municipios %>% full_join(alunos_por_docentes,
+                                                            by = c("Codmun7" = "CO_MUNICIPIO"))
+alu_por_doc_idhm
+
+#Ordenando por ordem crescente do idhm
+alu_por_doc_idhm_dec <- alu_por_doc_idhm %>% arrange(desc(idhm))
+alu_por_doc_idhm_dec
+
+#Trocando o código pelo nome do municício
 
 
-
+##
