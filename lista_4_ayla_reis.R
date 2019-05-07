@@ -36,11 +36,9 @@ unique("pnud$ANO")
 #Filtração de dados que serão trabalhados PNUD
 pnud_pe_2010 <- pnud %>% filter(ANO == 2010 & UF == 26)
 
-#Removendo o que não será mais utilizado
-rm("pnud")
 
-##Filtrando dados que ser�o trabalhados censo escolar
-# Docentes <70 anos e > 18 anos, agrupados pelo munic�pio onde lecionam
+##Filtrando dados que ser?o trabalhados censo escolar
+# Docentes <70 anos e > 18 anos, agrupados pelo munic?pio onde lecionam
 docentes_sel <- docentes_pe %>% group_by(CO_MUNICIPIO) %>% summarise(num_docentes = sum(NU_IDADE < 70 & NU_IDADE > 18))
 docentes_sel
 
@@ -48,6 +46,54 @@ docentes_sel
 alunos_sel <- matricula_pe %>% group_by(CO_MUNICIPIO) %>% summarise(num_alunos = sum(NU_IDADE < 25 & NU_IDADE > 1))
 alunos_sel
 
-##Filtranto o IDMH 
+##Filtranto o IDMH do pnud
 idh_municipios <- pnud_pe_2010 %>% group_by(Codmun7) %>% summarise(idhm = IDHM)
 idh_municipios
+
+##Criando aluno por docentes no município
+#Unindo em tabela de alunos e docentes
+alunos_docentes_municipio <- alunos_sel %>% full_join(docentes_sel,
+                                                     by = c("CO_MUNICIPIO" = "CO_MUNICIPIO")
+)
+dim(docentes_sel)
+dim(alunos_sel)
+names(alunos_docentes_municipio)
+
+#Alunos por docentes no município
+alunos_por_docentes <- alunos_docentes_municipio %>% group_by(CO_MUNICIPIO) %>% summarise(alu_por_doc = num_alunos/num_docentes)
+alun_p_doc
+
+##Estatistica descritiva do número de alunos por docente nos municípios
+
+#Média aritimética
+mean(alunos_por_docentes[["alu_por_doc"]])
+
+#Mediana
+median(alunos_por_docentes[["alu_por_doc"]])
+
+#Moda
+moda_alu_por_doc <- c(sample((1:10, 100, replace= T)))
+table(moda_alu_por_doc)
+table(moda_alu_por_doc)[which.max(table(moda_alu_por_doc))]
+  #Há prevalência de ser 10 alunos por professor
+
+#Quantis + val. min e max + mediana + media
+summary(alunos_por_docentes[["alu_por_doc"]])
+
+#Amplitude
+max(alunos_por_docentes[["alu_por_doc"]]) - min(alunos_por_docentes[["alu_por_doc"]])
+
+#Variância
+var(alunos_por_docentes[["alu_por_doc"]])
+
+#Desvio padrão
+sd(alunos_por_docentes[["alu_por_doc"]])
+
+#Coeficiente de variação
+100*sd(alunos_por_docentes[["alu_por_doc"]])/ mean(alunos_por_docentes[["alu_por_doc"]])
+
+
+##Maior número de alunos por docente e seu idhm
+
+
+
