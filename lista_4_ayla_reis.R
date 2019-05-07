@@ -102,8 +102,9 @@ alu_por_doc_idhm
 #Ordenando por ordem decrescente do idhm
 alu_por_doc_idhm_dec <- alu_por_doc_idhm %>% arrange(desc(idhm))
 alu_por_doc_idhm_dec
+save(alunos_por_docentes , file = "alu_por_doc_idhm_dec.RData")
 
-#Trocando o código pelo nome do municício
+#Trocando o código pelo nome do municícioa
 
 
 ##Correlação linear de Pearson 
